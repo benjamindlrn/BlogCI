@@ -20,10 +20,11 @@
  background: #337ab7;
  color: #fff;
  }
- p {
- color: #f00;
- font-weight: bold;
- }
+
+ .row {
+    margin-right: -13px;
+    margin-left: -15px;
+}
  </style>
 
 
@@ -63,7 +64,7 @@
 <body>
     <textarea name="text">  
   
-</textarea>
+</textarea><p><?=form_error('text')?></p>
 </body>
 </html>
 

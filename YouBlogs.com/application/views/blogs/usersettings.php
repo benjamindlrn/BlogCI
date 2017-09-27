@@ -50,7 +50,7 @@
 ?>
 <div class="popup" data-popup="popup-1">
     <div class="popup-inner">   
-    <?=form_open()?>
+    <?=form_open('blogs/update_user')?>
     <table>
     <tr>
     <td rowspan="2"><div align="center">

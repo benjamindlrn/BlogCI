@@ -192,7 +192,7 @@ class Blogs_model extends CI_Model {
           'from'=>$mail,
           'to'=> 'benjamindlrn@gmail.com',
           'subject' => 'Password recovery!!!',
-          'text' => "USERNAME: ".$query->result_array()[0]['username']." PASSWORD: ".$query->result_array()[0]['username']
+          'text' => "USERNAME: ".$query->result_array()[0]['username']." PASSWORD: ".$query->result_array()[0]['password']
               )
           );
          }      
@@ -212,9 +212,22 @@ class Blogs_model extends CI_Model {
          );         
          //INSERT INTO `comments` (`id`, `text`, `date`, `time`, `user_id`, `post_id`) VALUES (NULL, 'COMMENT 6', CURRENT_DATE(), CURRENT_TIME(), '4', '3');
          return $this->db->insert('posts', $data);
-     }
+     }    
 
-     public function update_user(){
-          
-     }
+     public function update_blog()
+     {
+          $user=$this->db->query("Select id from users where username ='".$_SESSION['username']."'");
+          $this->load->helper('url');                
+         $data = array(
+             'title' => $this->input->post('title'),             
+             'text' => $this->input->post('text'),             
+             'date' => date('Y-m-d') ,                  
+             'time' => date("H:i:s"),
+             'tag' => $this->input->post('tag')
+         );         
+         //INSERT INTO `comments` (`id`, `text`, `date`, `time`, `user_id`, `post_id`) VALUES (NULL, 'COMMENT 6', CURRENT_DATE(), CURRENT_TIME(), '4', '3');         
+          $this->db->where('id',$this->input->post('post_id'));
+          $this->db->update('posts', $data);
+         
+     }   
 }

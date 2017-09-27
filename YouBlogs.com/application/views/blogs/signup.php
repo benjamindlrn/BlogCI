@@ -83,7 +83,7 @@
 <?php
  $username = array('name' => 'username', 'placeholder' => 'Type your username');
  $password = array( 'id'=> 'password' , 'name' => 'password', 'placeholder' => 'Type your password', 'type'=>'password');
- $passwordConfirm = array( 'id'=>'passwordC','name' => 'passwordC', 'placeholder' => 'Confirm your password', 'type'=>'password', 'class' => 'hidden');
+ $passwordConfirm = array( 'id'=>'passwordC','name' => 'passwordC', 'placeholder' => 'Confirm your password', 'type'=>'password');
  $email = array('name' => 'email', 'placeholder' => 'Type your email', 'type'=>'email');
  $submit = array('name' => 'submit', 'value' => 'Sign Up', 'title' => 'Sign Up');
  $inputUpload = array('id' => 'fileToUpload', 'type' => 'file', 'name' => 'myfile', 'onchange'=>"previewFile()", 'accept' => 'image/*');
@@ -104,8 +104,10 @@
  <?=form_input($username)?><p><?=form_error('username')?></p>
  <label for="password">Password:</label>
  <?=form_input($password)?><p><?=form_error('password')?></p>
+ <?=form_input($passwordConfirm)?><p><?=form_error('passwordC')?></p>
  <label for="email">Email:</label>
  <?=form_input($email)?><p><?=form_error('email')?></p>
  <?=form_submit($submit)?>
  <?=form_close()?>
 </div>
+

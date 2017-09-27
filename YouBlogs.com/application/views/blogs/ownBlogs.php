@@ -19,8 +19,8 @@
       ?>
 		 <h4><small>RECENT POSTS</small></h4>
 <hr>
-<?php
-        $query = $this->db->query("select id,text,title,user_id,date, LOWER(DATE_FORMAT(time,'%l:%i %p')) 'time', tag FROM posts WHERE title LIKE '" . $search . "%'". "OR title LIKE '% " . $search . "%' order by date DESC, time DESC" );        
+<?php        
+        $query = $this->db->query("select id,text,title,user_id,date, LOWER(DATE_FORMAT(time,'%l:%i %p')) 'time', tag FROM posts WHERE user_id = '" . $user_id ."' order by date DESC, time DESC" );        
       foreach ($query->result_array() as $val) {
          $username = $this->db->query("select username FROM users where users.id = ".$val['user_id']);
             $rest = substr($val['text'], 0, 700); 
@@ -32,7 +32,7 @@
         <h5><span class="label label-danger">'.$val['tag'].'</span></h5><br>
         <p>'.$rest.'</p>
         <p align="center">';                          
-         echo form_open(site_url("blogs/loadBlog"),array('method' => 'get'));
+        echo form_open(site_url("blogs/loadBlog"),array('method' => 'get'));
         echo form_button($submitLoad, 'See more');
         echo form_close();
         if (isset($_SESSION['username']))
@@ -72,5 +72,3 @@ function myFunction() {
       
       
 
-
-            

@@ -3,7 +3,7 @@
 </div>
 
 <footer class="container-fluid">
-  <p>Footer Text</p>
+  <p align="center" style="color: white">Copyright © 2017 Apple Inc. Todos los derechos reservados.</p>
 </footer>
 
 </body>

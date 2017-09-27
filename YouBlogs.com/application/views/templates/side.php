@@ -6,6 +6,7 @@
         <?php  if (isset($this->session->username)) echo '        
         <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="'.site_url("blogs/usersettings").'">Settings</a></li><br>
+        <li class="active"><a href="'.site_url("blogs/own_blogs").'">My blogs</a></li><br>
         </ul>';?>
       </ul><br>
        <?php

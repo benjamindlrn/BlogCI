@@ -49,19 +49,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route['blogs/own_blogs'] = 'blogs/own_blogs';
+$route['blogs/update_user'] = 'blogs/update_user';
 $route['blogs/send_recovery'] = 'blogs/send_recovery';
 $route['blogs/recover_password'] = 'blogs/recover_password';
 $route['blogs/usersettings'] = 'blogs/usersettings';
 $route['blogs/insert_comment'] = 'blogs/insert_comment';
+$route['blogs/deleteBlog'] = 'blogs/deleteBlog';
+$route['blogs/edit_blog'] = 'blogs/edit_blog';
+$route['blogs/editBlog'] = 'blogs/editBlog';
 $route['blogs/loadBlog'] = 'blogs/loadBlog';
 $route['blogs/results'] = 'blogs/results';
 $route['blogs/logout'] = 'blogs/logout';
 $route['blogs/enter'] = 'blogs/enter';
+$route['blogs/update_validation'] = 'blogs/update_validation';
 $route['blogs/create_validation'] = 'blogs/create_validation';
 $route['blogs/login_validation'] = 'blogs/login_validation';
 $route['blogs/signup_validation'] = 'blogs/signup_validation';
 $route['blogs/signup'] = 'blogs/signup';
 $route['blogs/login'] = 'blogs/login';
+$route['blogs/editBlog'] = 'blogs/editBlog';
 $route['blogs/create'] = 'blogs/create';
 $route['blogs/(:any)'] = 'blogs/view/$1';
 $route['default_controller'] = 'blogs';
