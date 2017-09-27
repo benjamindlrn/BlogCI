@@ -1,7 +1,10 @@
 
+
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" type="text/css" href="/application/views/blogs/css/style.css">
 <script type="text/javascript" src="/application/views/blogs/js/script.js"></script>
+<script src="lib/jquery.js"></script>
+<script src="dist/jquery.validate.js"></script>
 <div class="w3-card-4" id="card" style="margin-top: 8%">
 <style type="text/css">
   form, input {
@@ -43,20 +46,21 @@
 </div>
 </div>
 <?php
-      $usernameInput = array('name' => 'username', 'placeholder' => 'Type your new username', 'value' => $username);
-      $emailInput = array('name' => 'email', 'placeholder' => 'Type your new email', 'type'=>'email', 'value' => $email);
+
+      $usernameInput = array('name' => 'username', 'placeholder' => 'Type your new username', 'value' => $username,'minlength'=>3);
+      $emailInput = array('name' => 'email', 'placeholder' => 'Type your new email', 'type'=>'email', 'value' => $email,'required'=>true);
        $submit = array('name' => 'submit', 'value' => 'Confirm', 'title' => 'Confirm');
-       $inputUpload = array('id' => 'fileToUpload', 'type' => 'file', 'name' => 'myfile', 'onchange'=>"previewFile()", 'accept' => 'image/*');
+       $inputUpload = array('id' => 'fileToUpload', 'type' => 'file', 'name' => 'myfile', 'onchange'=>"previewFile()", 'accept' => 'image/*','required'=>true);
 ?>
 <div class="popup" data-popup="popup-1">
     <div class="popup-inner">   
-    <?=form_open('blogs/update_user')?>
+      <?=form_open_multipart('blogs/update_user',array('id'=>'commentForm'))?>
     <table>
     <tr>
     <td rowspan="2"><div align="center">
     <div class="fileinput fileinput-new" data-provides="fileinput">
     
-        <p><img src="<?=$img?>" class="img-circle" height="100" width="100" alt="Avatar"></p>
+        <p><img id="newimage" src="<?=$img?>" class="img-circle" height="100" width="100" alt="Avatar"></p>
 
     
     <div class="file-tab panel-body" id="file">
@@ -75,4 +79,63 @@
         <a class="popup-close" data-popup-close="popup-1" href="#">x</a>
     </div>
 </div>
+<script>
+     function previewFile(){
+         var preview = document.querySelector('#newimage'); //selects the query named img
+         var file    = document.querySelector('input[type=file]').files[0]; //sames as here
+         var reader  = new FileReader();
+
+         reader.onloadend = function () {
+             preview.src = reader.result;
+         }
+
+         if (file) {
+             reader.readAsDataURL(file); //reads the data as a URL
+         } else {
+             preview.src = "";
+         }
+    }
+
+    previewFile();  //calls the function named previewFile()
+  </script>
+<script>
+  $.validator.setDefaults({
+    submitHandler: function() {
+      alert("submitted!");
+    }
+  });
+
+  $().ready(function() {
+    // validate the comment form when it is submitted
+    $("#commentForm").validate();
+
+    // validate signup form on keyup and submit
+    $("#signupForm").validate({
+      rules: {        
+        username: 
+        {
+          required: true,
+          minlength: 2
+        },
+        email: 
+        {
+          required: true,
+          email: true
+        }       
+      },
+      messages: 
+      {       
+        email: "Please enter a valid email address",
+      }
+    });     
+  });
+  </script>
+  
+
+
+
+
+
+
+
 

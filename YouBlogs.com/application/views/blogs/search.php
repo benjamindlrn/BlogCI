@@ -6,6 +6,9 @@
 			 </tr>
 		 </thead>
 		 <tr>  
+     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" type="text/css" href="/application/views/blogs/css/style.css">
+<script type="text/javascript" src="/application/views/blogs/js/script.js"></script>
      <?php if (isset($this->session->username)){
        echo '<p><a href="'.site_url("blogs/create").'">
           <button type="button" class="btn btn-default btn-sm">
@@ -23,7 +26,7 @@
         $query = $this->db->query("select id,text,title,user_id,date, LOWER(DATE_FORMAT(time,'%l:%i %p')) 'time', tag FROM posts WHERE title LIKE '" . $search . "%'". "OR title LIKE '% " . $search . "%' order by date DESC, time DESC" );        
       foreach ($query->result_array() as $val) {
          $username = $this->db->query("select username FROM users where users.id = ".$val['user_id']);
-            $rest = substr($val['text'], 0, 700); 
+            $rest = substr($val['text'], 0, 350); 
         $submitLoad = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit');  
         $submitEdit = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit');  
         $submitDelete = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit');  

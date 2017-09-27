@@ -112,33 +112,7 @@ class Blogs_model extends CI_Model {
       }
  
 
-      public function sign_up()
-     {
-         $this->load->helper('url');  
-         $url="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831287/";
-         $imageId;
-         $default="avatar.jpg";                  
-         $this->local_upload();
-         $imageId=$_FILES['myfile']['name'];                                         
-
-         if ($imageId==='')
-         {
-            $imageId="avatar.jpg";                  
-         }
-         
-         $data = array(
-             'username' => $this->input->post('username'),             
-             'password' => $this->input->post('password'),
-             'email' => $this->input->post('email'),
-             'img' => $url.$imageId
-         );
-
-         //INSERT INTO `users` (`id`, `username`, `password`) VALUES (NULL, '', '')
-         $this->db->insert('users', $data);
-
-         
-     }
-     
+ 
 
 
      public function set_comment()
@@ -159,8 +133,7 @@ class Blogs_model extends CI_Model {
              'post_id' => $postId
          );            
 
-          if(strcmp($authorMail,$userMail))
-          {
+          
           
           //Your credentials
           $mg = new Mailgun("key-00bbce2ade401740e797ca97e0b3e90d");
@@ -169,12 +142,12 @@ class Blogs_model extends CI_Model {
           
           $mg->sendMessage($domain, array(
           'from'=>$userMail,
-          'to'=> $authorMail,
+          'to'=> 'benjamindlrn@gmail.com',
           'subject' => 'Someone has commented on your blog!!',
           'text' => $text
               )
           );
-          }
+          
                     return $this->db->insert('comments', $data);
    
 
@@ -213,6 +186,34 @@ class Blogs_model extends CI_Model {
          //INSERT INTO `comments` (`id`, `text`, `date`, `time`, `user_id`, `post_id`) VALUES (NULL, 'COMMENT 6', CURRENT_DATE(), CURRENT_TIME(), '4', '3');
          return $this->db->insert('posts', $data);
      }    
+
+          public function sign_up()
+     {
+         $this->load->helper('url');  
+         $url="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831287/";
+         $imageId;
+         $default="avatar.jpg";                  
+         $this->local_upload();
+         $imageId=$_FILES['myfile']['name'];                                         
+
+         if ($imageId==='')
+         {
+            $imageId="avatar.jpg";                  
+         }
+         
+         $data = array(
+             'username' => $this->input->post('username'),             
+             'password' => $this->input->post('password'),
+             'email' => $this->input->post('email'),
+             'img' => $url.$imageId
+         );
+
+         //INSERT INTO `users` (`id`, `username`, `password`) VALUES (NULL, '', '')
+         $this->db->insert('users', $data);
+
+         
+     }
+     
 
      public function update_blog()
      {

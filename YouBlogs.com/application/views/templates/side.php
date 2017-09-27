@@ -10,7 +10,7 @@
         </ul>';?>
       </ul><br>
        <?php
-      $inpSearch = array('class' => 'form-control', 'placeholder' => 'Search Blog..', 'name' => 'search', 'style' => 'width:240px');
+      $inpSearch = array('class' => 'form-control', 'placeholder' => 'Search Blog..', 'name' => 'search', 'style' => 'width:auto');
       $btnSearch = array('id' => 'btnSelect', 'class' => 'btn btn-default', 'value'=> 'Buscar');
       $attributes = array('method' => 'get');
       ?>

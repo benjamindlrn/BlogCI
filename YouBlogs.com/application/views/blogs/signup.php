@@ -43,39 +43,6 @@
 
 	  previewFile();  //calls the function named previewFile()
   </script>
-
-  <script type="text/javascript">  
-  	$(document).ready(function(){
-    $("div").click(function(){
-        
-    });    
-});
-  </script>
-  <script type="text/javascript">  
-        $(document).ready(function(){
-        $("#btnFile").click(function(){
-        $("#url").addClass('hidden');
-        $("#file").removeClass('hidden');
-        $("#selector").val("FILE");
-        }); 
-        $("#btnUrl").click(function(){
-        $("#file").addClass('hidden');
-        $("#url").removeClass('hidden');
-        $("#selector").val("URL");
-        }); 
-        $("#imgUrl").change(function(){
-          $("img").attr('src',$("#imgUrl").val());
-        });
-        $("#password").keyup(function(){
-            if($("#password").val()===null){
-              $("#passwordC").addClass("hidden");
-            }
-            else{
-              $("#passwordC").removeClass("hidden");
-            }
-        });
-    });
-  </script>
  <div align="center" style="margin-top: 5%">
  <div class="fileinput fileinput-new" data-provides="fileinput">
     <img src="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831697/avatar.jpg" class="img-circle" height="100" width="100" alt="Avatar">
@@ -86,8 +53,7 @@
  $passwordConfirm = array( 'id'=>'passwordC','name' => 'passwordC', 'placeholder' => 'Confirm your password', 'type'=>'password');
  $email = array('name' => 'email', 'placeholder' => 'Type your email', 'type'=>'email');
  $submit = array('name' => 'submit', 'value' => 'Sign Up', 'title' => 'Sign Up');
- $inputUpload = array('id' => 'fileToUpload', 'type' => 'file', 'name' => 'myfile', 'onchange'=>"previewFile()", 'accept' => 'image/*');
- $formUrl = array('id' => 'imgUrl', 'name' => 'imgUrl', 'type' => 'text', 'class' => 'form-control hasclear', 'placeholder'=>"Image URL");?>
+ $inputUpload = array('id' => 'fileToUpload', 'type' => 'file', 'name' => 'myfile', 'onchange'=>"previewFile()", 'accept' => 'image/*');?>
  <?=form_open_multipart(site_url("blogs/signup_validation"))?>
  <div class="imageupload panel panel-default" style="width: 20em">
                 <div class="panel-heading clearfix">

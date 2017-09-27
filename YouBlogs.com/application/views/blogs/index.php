@@ -26,7 +26,7 @@
 
       foreach ($query->result_array() as $val) {
         $username = $this->db->query("select username FROM users where users.id = ".$val['user_id']);
-        $rest = substr($val['text'], 0, 700); 
+        $rest = substr($val['text'], 0, 350); 
         $submitLoad = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit');  
           
        echo '<h2>'.$val['title'].'</h2>

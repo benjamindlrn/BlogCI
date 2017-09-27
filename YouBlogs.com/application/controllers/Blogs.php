@@ -26,10 +26,16 @@ class Blogs extends CI_Controller {
                 $this->load->view('blogs/blog',$data);
                 $this->load->view('templates/footer');                
         }
-
+        public function notfound(){                                        
+                $this->load->view('templates/header');
+                $this->load->view('blogs/404');
+                $this->load->view('templates/footer');                
+        }
         public function deleteBlog()
         {
-            $post_id = $this->input->get('post_id');                              
+            $post_id = $this->input->get('post_id');
+            $this->db->where('post_id',$_POST['post_id']);
+            $this->db->delete('comments');                              
             $this->db->where('id',$_POST['post_id']);
             $this->db->delete('posts');
             redirect('blogs');               
@@ -49,12 +55,20 @@ class Blogs extends CI_Controller {
 
         public function editBlog()
         {
-            $post_id = $this->input->get('post_id');                                          
+            //select * from posts where id=17 and user_id=60
+            $post_id = $this->input->get('post_id'); 
+            var_dump($post_id);
+            $user_id=$this->db->query("select id from users where username='".$_SESSION['username']."'");  
+            $this->db->where('id',$post_id);
+            $this->db->where('user_id',$user_id->result_array()[0]['id']);
+            if($this->db->count_all_results('posts')>0)
+            {
+                                       
             $this->load->model('blogs_model');
             if (!$this->blogs_model->is_logged_in())
             {
                 redirect(site_url('blogs'));  
-            }
+            }            
             $query=$this->db->query("Select * from posts where id='".$post_id."'");
             
                 $data = array(
@@ -67,6 +81,11 @@ class Blogs extends CI_Controller {
             $this->load->view('templates/header');                
             $this->load->view('blogs/update',$data);
             $this->load->view('templates/footer');
+            }
+            else
+            {
+              redirect('blogs');
+            }
             }
         
         
@@ -272,7 +291,9 @@ class Blogs extends CI_Controller {
             $this->load->model('blogs_model');
             if (!$this->blogs_model->is_logged_in())
             {
-                redirect(site_url('blogs'));                  redirect(site_url('blogs'));              }
+                redirect(site_url('blogs'));                 
+
+            }
             $query=$this->db->query("Select * from users where username = '".$_SESSION['username']."'");
             $data = array(
               'username' =>  $query->result_array()[0]['username'],
@@ -328,7 +349,20 @@ class Blogs extends CI_Controller {
               if (!$this->blogs_model->is_logged_in())
               {
                   redirect(site_url('blogs'));  
-              }               
+              }   
+
+              $this->load->helper('url');  
+               $url="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831287/";
+               $imageId;
+               $default="avatar.jpg";                  
+               $this->blogs_model->local_upload();
+               $imageId=$_FILES['myfile']['name'];                                         
+
+               if ($imageId===NULL)
+               {
+                  $imageId="avatar.jpg";                  
+               }
+               
               $this->load->model('blogs_model');              
               $username=$this->session->userdata('username');
               $newUsername=$this->input->post('username');  
@@ -336,17 +370,15 @@ class Blogs extends CI_Controller {
               $id= $this->db->query("select id from users where username='".$username."'")->result_array()[0]['id'];  
               $data = array(
               'username' => $newUsername,
-              'email' => $email
-              );
+              'email' => $email,
+              'img' => $url.$imageId
+              );              
               $this->db->where('id', $id);
-              echo "username:".$newUsername;
-              echo "  email:".$email;
-              echo "  id:".$id;
               $this->db->update('users', $data);
               $session_data = array(  
                               'username'=>$newUsername  
                          );  
                          $this->session->set_userdata($session_data); 
-              redirect('blogs');
+              redirect('blogs/usersettings');
           }
 }

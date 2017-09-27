@@ -28,9 +28,6 @@
 
 
 <?php 
-
-               
-              
  $inptitle = array('name' => 'title', 'placeholder' => 'Type a title','value'=>$title);
  $submit = array('name' => 'submit', 'value' => 'Done', 'title' => 'Done');
  ?>
