@@ -1,4 +1,3 @@
-
    <div class='col-sm-9' id='divbutton'>
       <table class = 'table'>      
        	 <thead>
@@ -20,6 +19,7 @@
         }
       ?>
       <h4><small>RECENT POSTS</small></h4>
+      <p style="font-size: 28px; color: red"><?=$this->session->flashdata('Message');?></p>
       <hr>      
       <?php
         $query = $this->db->query('select id,text,title,user_id,date, LOWER(DATE_FORMAT(time,"%l:%i %p")) "time", tag from posts order by date DESC, time DESC');
@@ -34,7 +34,7 @@
         <h5><span class="label label-danger">'.$val['tag'].'</span></h5><br>
         <p>'.$rest.'</p>
         <p align="center"><br>';                          
-        echo form_open(site_url("blogs/loadBlog"),array('method' => 'get'));
+        echo form_open(site_url("blogs/loadBlog"),array('method' => 'get'));        
         echo form_button($submitLoad, 'See more');
         echo form_close();
         if (isset($_SESSION['username']))
@@ -42,13 +42,15 @@
             $query = $this->db->query("select id from users where username='".$_SESSION['username']."'");
             if($query->result_array()[0]['id']===$val['user_id'])
             {
+                            echo "<label value='".$val['id']."'></label>";
               $submitEdit = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit');  
-             $submitDelete = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit', 'onclick'=>'myFunction()');
-              echo form_open('blogs/editBlog',array('method' => 'get','style'=>'float:right'));
+             $submitDelete = array('name' => 'postid', 'value' => $val['id'] ,'class' => 'btn btn-default', 'type'=>'submit', 'onclick'=>'myFunction()');
+              echo form_open('blogs/editBlog',array('method' => 'get','style'=>'float:right', 'value'));
               echo form_button($submitEdit, 'Edit');  
               echo form_close();
               echo form_open('blogs/deleteBlog',array('method' => 'post','style'=>'float:right', 'class'=>'target'));
-              echo form_button($submitDelete, 'Delete'); 
+              echo form_button($submitDelete, 'Delete');
+              echo form_hidden(array("post_id"=>$val['id']));
               echo form_close();                         
             }                      
         }       
@@ -72,5 +74,5 @@ function myFunction() {
     }
 }
 </script>
-      
+
       

@@ -10,8 +10,8 @@
         </ul>';?>
       </ul><br>
        <?php
-      $inpSearch = array('class' => 'form-control', 'placeholder' => 'Search Blog..', 'name' => 'search', 'style' => 'width:auto');
-      $btnSearch = array('id' => 'btnSelect', 'class' => 'btn btn-default', 'value'=> 'Buscar');
+      $inpSearch = array('class' => 'form-control', 'placeholder' => 'Search Blog..', 'name' => 'search', 'style' => 'width:70%');
+      $btnSearch = array('id' => 'btnSelect', 'class' => 'btn btn-default', 'value'=> 'Buscar', 'style' => 'width:30%');
       $attributes = array('method' => 'get');
       ?>
       <div class="input-group">

@@ -47,11 +47,7 @@ class Blogs_model extends CI_Model {
 		     return $this->db->insert('blogs', $data);
 		 }
 
-     public function is_logged_in()
-     {     
-        $user = $this->session->username;
-        return isset($user);    
-     }
+     
 
 		 function can_login($username, $password)  
       {  
@@ -70,48 +66,7 @@ class Blogs_model extends CI_Model {
            }  
       }  
 
-      public function local_upload()
-      {
-          $currentDir = getcwd();
-          $uploadDirectory = "/uploads/";
-          $fileExtensions = ['jpeg','jpg','png']; // Get all the file extensions
-          $fileName = $_FILES['myfile']['name'];
-          $fileSize = $_FILES['myfile']['size'];
-          $fileTmpName  = $_FILES['myfile']['tmp_name'];
-          $fileType = $_FILES['myfile']['type'];          
-          $tmp = explode('.', $fileName);
-          $fileExtension = end($tmp);
-          $uploadPath = $currentDir . $uploadDirectory . basename($fileName); 
-          if (isset($_POST['submit'])) {
-
-              if (! in_array($fileExtension,$fileExtensions)) {
-                  $errors[] = "This file extension is not allowed. Please upload a JPEG or PNG file";
-              }
-
-              if ($fileSize > 2000000) {
-                  $errors[] = "This file is more than 2MB. Sorry, it has to be less than or equal to 2MB";
-              }
-
-              if (empty($errors)) {
-                  $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
-
-                  if ($didUpload) {
-                    $str = explode('.',$fileName);
-                    $name = $str[0];
-                      \Cloudinary\Uploader::upload($uploadPath,array("public_id" => $name));
-
-                  } else {
-                      echo "An error occurred somewhere. Try again or contact the admin";
-                  }
-              } else {
-                  foreach ($errors as $error) {
-                      echo $error . " These are the errors" . "\n";
-                  }
-              }
-          }
-      }
- 
-
+   
  
 
 
@@ -187,19 +142,75 @@ class Blogs_model extends CI_Model {
          return $this->db->insert('posts', $data);
      }    
 
+
+   public function local_upload()
+      {
+          $currentDir = getcwd();
+          $uploadDirectory = "/uploads/";
+          $fileExtensions = ['jpeg','jpg','png']; // Get all the file extensions
+          $fileName = $_FILES['myfile']['name'];
+          $fileSize = $_FILES['myfile']['size'];
+          $fileTmpName  = $_FILES['myfile']['tmp_name'];
+          $fileType = $_FILES['myfile']['type'];          
+          $tmp = explode('.', $fileName);
+          $fileExtension = end($tmp);
+          $uploadPath = $currentDir . $uploadDirectory . basename($fileName); 
+          $valid = false;
+          if (isset($_POST['submit'])) {
+
+              if (! in_array($fileExtension,$fileExtensions)) {
+                  $errors[] = "This file extension is not allowed. Please upload a JPEG or PNG file";
+              }
+
+              if ($fileSize > 2000000) {
+                  $errors[] = "This file is more than 2MB. Sorry, it has to be less than or equal to 2MB";
+              }
+
+              if (empty($errors)) {
+                  $didUpload = move_uploaded_file($fileTmpName, $uploadPath);
+
+                  if ($didUpload) {
+                    $str = explode('.',$fileName);
+                    $name = $str[0];
+                    $valid=true;
+                      \Cloudinary\Uploader::upload($uploadPath,array("public_id" => $name));
+                      unlink($uploadPath);
+
+
+                  } else {
+                      echo "An error occurred somewhere. Try again or contact the admin";
+                  }
+              } else {
+                  foreach ($errors as $error) {
+                      echo $error . " These are the errors" . "\n";
+
+                  }
+ 
+                }
+            }
+            return $valid;
+          }
+          
+      
+ 
+
+
           public function sign_up()
      {
          $this->load->helper('url');  
          $url="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831287/";
          $imageId;
          $default="avatar.jpg";                  
-         $this->local_upload();
-         $imageId=$_FILES['myfile']['name'];                                         
+         
+         
 
-         if ($imageId==='')
-         {
-            $imageId="avatar.jpg";                  
-         }
+               if (!$this->blogs_model->local_upload())
+               {
+                  $imageId="avatar.jpg";                  
+               }
+               else {
+                  $imageId=$_FILES['myfile']['name'];                                          
+               }
          
          $data = array(
              'username' => $this->input->post('username'),             

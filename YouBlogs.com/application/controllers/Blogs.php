@@ -20,7 +20,7 @@ class Blogs extends CI_Controller {
                 $this->load->view('templates/footer');
         }
 
-        public function loadBlog(){                        
+        public function loadBlog(){                    
                 $data['post_id'] = $this->input->get('post_id');                              
                 $this->load->view('templates/header');
                 $this->load->view('blogs/blog',$data);
@@ -33,6 +33,11 @@ class Blogs extends CI_Controller {
         }
         public function deleteBlog()
         {
+          $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }
             $post_id = $this->input->get('post_id');
             $this->db->where('post_id',$_POST['post_id']);
             $this->db->delete('comments');                              
@@ -42,8 +47,8 @@ class Blogs extends CI_Controller {
         }
    public function create()
         {                        
-                $this->load->model('blogs_model');
-                if (!$this->blogs_model->is_logged_in())
+                $this->load->helper('session');
+                if (!is_logged_in())
                 {
                     redirect(site_url('blogs'));  
                 }
@@ -55,20 +60,24 @@ class Blogs extends CI_Controller {
 
         public function editBlog()
         {
+          $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }
             //select * from posts where id=17 and user_id=60
             $post_id = $this->input->get('post_id'); 
-            var_dump($post_id);
             $user_id=$this->db->query("select id from users where username='".$_SESSION['username']."'");  
             $this->db->where('id',$post_id);
             $this->db->where('user_id',$user_id->result_array()[0]['id']);
             if($this->db->count_all_results('posts')>0)
             {
                                        
-            $this->load->model('blogs_model');
-            if (!$this->blogs_model->is_logged_in())
-            {
-                redirect(site_url('blogs'));  
-            }            
+            $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }         
             $query=$this->db->query("Select * from posts where id='".$post_id."'");
             
                 $data = array(
@@ -91,14 +100,22 @@ class Blogs extends CI_Controller {
         
         public function insert_comment()
         {
-          $this->load->model('blogs_model');
-              if (!$this->blogs_model->is_logged_in())
-              {
-                  redirect(site_url('blogs'));  
-              }                                      
-          $this->load->model('blogs_model'); 
-          $this->blogs_model->set_comment();
-          redirect('blogs/loadBlog?post_id='.$this->input->get('post_id'));
+          $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }                     
+                    if ($this->input->get('post_id')===$this->input->get('post_idC')) {
+                    $this->load->model('blogs_model'); 
+                    $this->blogs_model->set_comment();
+                    redirect('blogs/loadBlog?post_id='.$this->input->get('post_id'));
+                  }
+                    
+                 else{
+                  
+                    redirect('blogs/loadBlog?post_id='.$this->input->get('post_idC'));            
+                }                              
+          
         }      
 
 
@@ -114,11 +131,11 @@ class Blogs extends CI_Controller {
 
         public function own_blogs()
         {
-          $this->load->model('blogs_model');
-              if (!$this->blogs_model->is_logged_in())
-              {
-                redirect(site_url('blogs'));  
-              }
+         $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }
                 $query=$this->db->query("Select id from users where username = '".$this->session->userdata('username')."'");
                 $data= array(
                   'user_id' => $query->result_array()[0]['id']);
@@ -130,11 +147,11 @@ class Blogs extends CI_Controller {
         
         public function login()
         {          
-            $this->load->model('blogs_model');
-            if ($this->blogs_model->is_logged_in())
-            {
-                redirect(site_url('blogs'));  
-            }
+           
+                if (isset($this->session->username))
+                {
+                    redirect(site_url('blogs'));  
+                }
             $this->load->helper('form');
             $this->load->library('form_validation');
             $this->load->view('templates/header');
@@ -143,11 +160,10 @@ class Blogs extends CI_Controller {
 
             function login_validation()  
           {  
-              $this->load->model('blogs_model');
-              if ($this->blogs_model->is_logged_in())
-              {
-                redirect(site_url('blogs'));  
-              }
+             if (isset($this->session->username))
+                {
+                    redirect(site_url('blogs'));  
+                }
                $this->load->library('form_validation');  
                $this->form_validation->set_rules('username', 'Username', 'required');  
                $this->form_validation->set_rules('password', 'Password', 'required');                            
@@ -167,25 +183,26 @@ class Blogs extends CI_Controller {
                          redirect(site_url('blogs/enter'));  
                     }  
                     else  
-                    {                
+                    {       
+                        $this->session->set_flashdata('Message','Wrong user or password, Try again!');         
                         redirect(site_url("blogs/login"));                            
                     }  
                }  
                else  
                {  
                     //false  
-                    $this->login();  
+                    $this->login(); 
+
                }  
           }  
 
 
         public function signup()
         {
-            $this->load->model('blogs_model');
-            if ($this->blogs_model->is_logged_in())
-            {
-                redirect(site_url('blogs'));  
-            }
+            if (isset($this->session->username))
+                {
+                    redirect(site_url('blogs'));  
+                }
             $this->load->helper('form');
             $this->load->library('form_validation');
             $this->load->view('templates/header');
@@ -194,16 +211,16 @@ class Blogs extends CI_Controller {
 
           function signup_validation()  
           {  
-               $this->load->model('blogs_model');
-              if ($this->blogs_model->is_logged_in())
-              {
-                  redirect(site_url('blogs'));  
-              }
+               if (isset($this->session->username))
+                {
+                    redirect(site_url('blogs'));  
+                }
                $this->load->library('form_validation');  
-               $this->form_validation->set_rules('username', 'Username', 'required');  
-               $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]');  
-               $this->form_validation->set_rules('passwordC', 'Password Confirmation', 'required|matches[password]');
-               $this->form_validation->set_rules('email', 'Email', 'required|valid_email');  
+               $this->form_validation->set_message(array('is_unique'=>"That user name is already taken"));
+               $this->form_validation->set_rules('username', 'Username' ,'required|max_length[30]|is_unique[users.username]');  
+               $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[30]');  
+               $this->form_validation->set_rules('passwordC', 'Password Confirmation', 'matches[password]');
+               $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]');               
 
                if($this->form_validation->run())  
                {  
@@ -226,11 +243,11 @@ class Blogs extends CI_Controller {
 
           function create_validation()  
           {  
-               $this->load->model('blogs_model');
-              if (!$this->blogs_model->is_logged_in())
-              {
-                  redirect(site_url('blogs'));  
-              }
+              $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }
                $this->load->library('form_validation');  
                $this->form_validation->set_rules('title', 'Title', 'required');  
                $this->form_validation->set_rules('text', 'Text', 'required');  
@@ -238,6 +255,7 @@ class Blogs extends CI_Controller {
                {  
                     $this->load->model('blogs_model');                      
                     $this->blogs_model->set_blog();
+                    $this->session->set_flashdata('Message','Blog created!');
                     redirect(site_url('blogs'));  
                }     
                else{
@@ -245,26 +263,7 @@ class Blogs extends CI_Controller {
                }             
           }  
 
-          function update_validation()  
-          {  
-               $this->load->model('blogs_model');
-              if (!$this->blogs_model->is_logged_in())
-              {
-                  redirect(site_url('blogs'));  
-              }
-               $this->load->library('form_validation');  
-               $this->form_validation->set_rules('title', 'Title', 'required');  
-               $this->form_validation->set_rules('text', 'Text', 'required');  
-               if($this->form_validation->run())  
-               {  
-                    $this->load->model('blogs_model');                      
-                    $this->blogs_model->update_blog();
-                    redirect(site_url('blogs'));  
-               }     
-               else{
-                 $this->editBlog();
-               }             
-          }  
+          
 
           function enter(){  
                if($this->session->userdata('username') != '')  
@@ -277,7 +276,7 @@ class Blogs extends CI_Controller {
                }  
                else  
                {  
-                    $this->load->view('blogs/fail');      
+                    $this->load->view('blogs/404');      
                }  
           }  
           function logout()  
@@ -285,14 +284,82 @@ class Blogs extends CI_Controller {
                $this->session->unset_userdata('username');  
                redirect(site_url('blogs/login'));  
           }  
+          function enterPassword()
+          {
+            $this->load->helper('session');
+            if (!is_logged_in())
+            {
+                redirect(site_url('blogs'));  
+            }
+            $this->load->view('templates/header');
+            $this->load->view('blogs/setting_password');
+            $this->load->view('templates/footer');
+          }
+
+          function enterPassword_validation()
+          {
+            $this->load->helper('session');
+            if (!is_logged_in())
+            {
+                redirect(site_url('blogs'));  
+            }    
+               $this->load->library('form_validation');  
+               $this->load->model('blogs_model');               
+               
+                  $this->form_validation->set_rules('password', 'Password','required');                  
+                 if($this->form_validation->run())  
+                 {  
+                      if ($this->blogs_model->can_login($this->session->username,$this->input->post('password')))
+                      {
+                        redirect('blogs/update_password');
+                        }  
+                       else
+                       {
+                           $this->session->set_flashdata('login_check','Wrong password, try again');      
+                           redirect('blogs/enterPassword');
+                       }
+                 }     
+                 else{
+                   $this->enterPassword();
+                 }                                                    
+          }
+
+          function update_password()
+          {
+            $this->load->view('templates/header');
+            $this->load->view('blogs/update_password');
+            $this->load->view('templates/footer');
+          }
+
+          function update_password_validation()
+          {
+            $this->load->helper('session');
+            if (!is_logged_in())
+            {
+                redirect(site_url('blogs'));  
+            }    
+               $this->load->library('form_validation');  
+            $this->form_validation->set_rules('password','Password','required|min_length[8]|max_length[30]');  
+               $this->form_validation->set_rules('passwordC', 'Password Confirmation', 'matches[password]');                         
+               if($this->form_validation->run())  
+               {  
+                    $this->db->where('username',$this->session->username)
+                             ->set('password',$this->input->post('password'))
+                             ->update('users');
+                    $this->session->set_flashdata('Message','Password changed');
+                    redirect('blogs/usersettings');
+               }     
+               else{
+                 $this->update_password();
+               } 
+          }
 
           function usersettings()
           {
-            $this->load->model('blogs_model');
-            if (!$this->blogs_model->is_logged_in())
+            $this->load->helper('session');
+            if (!is_logged_in())
             {
-                redirect(site_url('blogs'));                 
-
+                redirect(site_url('blogs'));  
             }
             $query=$this->db->query("Select * from users where username = '".$_SESSION['username']."'");
             $data = array(
@@ -303,6 +370,33 @@ class Blogs extends CI_Controller {
             $this->load->view('templates/header');
             $this->load->view('blogs/usersettings',$data);
             $this->load->view('templates/footer');   
+          }
+
+          function usersettings_validation()
+          {
+               $this->load->helper('session');
+               if (!is_logged_in())
+               {
+                   redirect(site_url('blogs'));  
+               }
+               $this->load->library('form_validation');  
+               $this->load->library('form_validation');  
+               if ($this->session->username!==$this->input->post('username'))
+               {
+                 $this->form_validation->set_message(array('is_unique'=>"That user name is already taken"));
+                $this->form_validation->set_rules('username', 'Username' ,'required|max_length[30]|is_unique[users.username]');
+               }      
+               else{
+                $this->form_validation->set_rules('username', 'Username' ,'required|max_length[30]');
+               }       
+               $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]');
+               if($this->form_validation->run())  
+               {  
+                    $this->update_user();  
+               }     
+               else{
+                    $this->usersettings();
+               }
           }
 
           public function recover_password() 
@@ -326,10 +420,8 @@ class Blogs extends CI_Controller {
             if($this->form_validation->run())
             {
               if($this->db->count_all_results('users')===0)
-              {              
-                echo "Please type a valid address";
-                redirect('blogs/recover_password');
-              }
+              {          
+                echo "That email is not associated";              }
               else 
               {
                 $mail=$this->input->post('mail');
@@ -345,24 +437,24 @@ class Blogs extends CI_Controller {
 
           public function update_user()
           {           
-              $this->load->model('blogs_model');
-              if (!$this->blogs_model->is_logged_in())
-              {
-                  redirect(site_url('blogs'));  
-              }   
-
+              $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }
               $this->load->helper('url');  
                $url="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831287/";
                $imageId;
                $default="avatar.jpg";                  
-               $this->blogs_model->local_upload();
-               $imageId=$_FILES['myfile']['name'];                                         
-
-               if ($imageId===NULL)
-               {
-                  $imageId="avatar.jpg";                  
-               }
                
+               if (!$this->blogs_model->local_upload())
+               {
+                  $img=$this->db->query("select img from users where username='".$this->session->username."'")->result_array()[0]['img'];
+                  $imageId=substr($img, 61);
+               }
+               else {
+                  $imageId=$_FILES['myfile']['name'];                                          
+               }
               $this->load->model('blogs_model');              
               $username=$this->session->userdata('username');
               $newUsername=$this->input->post('username');  
@@ -379,6 +471,28 @@ class Blogs extends CI_Controller {
                               'username'=>$newUsername  
                          );  
                          $this->session->set_userdata($session_data); 
+              $this->session->set_flashdata('Message','Changes saved');
               redirect('blogs/usersettings');
           }
+
+          function update_validation()  
+          {  
+              $this->load->helper('session');
+                if (!is_logged_in())
+                {
+                    redirect(site_url('blogs'));  
+                }
+               $this->load->library('form_validation');  
+               $this->form_validation->set_rules('title', 'Title', 'required');  
+               $this->form_validation->set_rules('text', 'Text', 'required');  
+               if($this->form_validation->run())  
+               {  
+                    $this->load->model('blogs_model');                      
+                    $this->blogs_model->update_blog();
+                    redirect(site_url('blogs'));  
+               }     
+               else{
+                 $this->editBlog();
+               }             
+          }  
 }

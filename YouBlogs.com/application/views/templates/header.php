@@ -13,8 +13,8 @@
     
     /* Set gray background color and 100% height */
     .sidenav {
-      background-color: #f1f1f1;
-      height: 100%;
+      background-color: #ffffff;
+      height: auto;
     }
     
     /* Set black background color, white text and some padding */

@@ -23,8 +23,11 @@
 		 <h4><small>RECENT POSTS</small></h4>
 <hr>
 <?php
-        $query = $this->db->query("select id,text,title,user_id,date, LOWER(DATE_FORMAT(time,'%l:%i %p')) 'time', tag FROM posts WHERE title LIKE '" . $search . "%'". "OR title LIKE '% " . $search . "%' order by date DESC, time DESC" );        
-      foreach ($query->result_array() as $val) {
+          
+        $results = $this->db->query("select COUNT(*)  FROM posts WHERE title LIKE '".$search."%' OR title LIKE '%".$search."%'")->result_array()[0]['COUNT(*)'];
+        if ($results>0) {
+          $query = $this->db->query("select id,text,title,user_id,date, LOWER(DATE_FORMAT(time,'%l:%i %p')) 'time', tag FROM posts WHERE title LIKE '" . $search . "%'". "OR title LIKE '% " . $search . "%' order by date DESC, time DESC" );
+           foreach ($query->result_array() as $val) {
          $username = $this->db->query("select username FROM users where users.id = ".$val['user_id']);
             $rest = substr($val['text'], 0, 350); 
         $submitLoad = array('name' => 'post_id', 'value' => $val['id'], 'class' => 'btn btn-default', 'type'=>'submit');  
@@ -55,7 +58,12 @@
         }       
         echo '</p>
         <hr>';       
-      }      
+      }            
+        }      
+        else
+        {
+            echo "<h3 align='center'>NO RESULTS FOUND</h3>";
+        }
       ?></tr>
       </table>
     </div>

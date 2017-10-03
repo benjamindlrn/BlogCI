@@ -14,7 +14,7 @@
  }
  input[type=submit]{
  padding: 5px 40px;
- background: #337ab7;
+ background: #2196f3;
  color: #fff;
  }
 
@@ -33,6 +33,7 @@
  $submit = array('name' => 'submit', 'value' => 'Log In', 'title' => 'Log In');
  ?>
  <div align="center" style="margin-top: 8%">
+  <label><?=$this->session->flashdata('Message');?></label>
  <?=form_open(site_url('blogs/login_validation'))?>
  <label for="username">Username:</label>
  <?=form_input($username)?><p><?=form_error('username')?></p>

@@ -17,7 +17,7 @@
 
  input[type=submit]{
  padding: 5px 40px;
- background: #337ab7;
+ background: #2196f3;
  color: #fff;
  }
 
@@ -25,6 +25,10 @@
     margin-right: -13px;
     margin-left: -15px;
 }
+
+  h4 {
+    color: red;
+  }
  </style>
 
 
@@ -37,7 +41,7 @@
  <div align="center" style="margin-top: 8%">
  <?=form_open(site_url('blogs/create_validation'))?>
  <label for="title">Title:</label>
- <?=form_input($title)?><p><?=form_error('title')?></p>
+ <?=form_input($title)?><h4><?=form_error('title')?></h4>
  <label for="sel1">Select a topic:</label>  
   <select class="form-control" name="tag" style="width: 200px">
     <option>Affirmations</option>
@@ -62,14 +66,24 @@
 	}
 </style>
 <body>
+<h4><?=form_error('text')?></h4>
     <textarea name="text">  
   
-</textarea><p><?=form_error('text')?></p>
+</textarea>
 </body>
 </html>
 
  <?=form_submit($submit)?>
  <?=form_close()?>
  </div>
+ <script type="text/javascript">
+   tinymce.init({
+  selector: "textarea",  // change this value according to your html
+  plugins: "paste",
+  menubar: "edit",
+  toolbar: "paste",
+  paste_enable_default_filters: true
+});
+ </script>
 
 

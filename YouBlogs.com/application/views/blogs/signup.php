@@ -12,7 +12,7 @@
  }
  input[type=submit]{
  padding: 5px 40px;
- background: #337ab7;
+ background: #2196f3;
  color: #fff;
  }
  footer {
@@ -45,13 +45,13 @@
   </script>
  <div align="center" style="margin-top: 5%">
  <div class="fileinput fileinput-new" data-provides="fileinput">
-    <img src="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831697/avatar.jpg" class="img-circle" height="100" width="100" alt="Avatar">
+    <img src="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831697/avatar.jp0" class="img-circle" height="100" width="100" alt="Avatar">
 
 <?php
  $username = array('name' => 'username', 'placeholder' => 'Type your username');
  $password = array( 'id'=> 'password' , 'name' => 'password', 'placeholder' => 'Type your password', 'type'=>'password');
  $passwordConfirm = array( 'id'=>'passwordC','name' => 'passwordC', 'placeholder' => 'Confirm your password', 'type'=>'password');
- $email = array('name' => 'email', 'placeholder' => 'Type your email', 'type'=>'email');
+ $email = array('name' => 'email', 'placeholder' => 'Type your email');
  $submit = array('name' => 'submit', 'value' => 'Sign Up', 'title' => 'Sign Up');
  $inputUpload = array('id' => 'fileToUpload', 'type' => 'file', 'name' => 'myfile', 'onchange'=>"previewFile()", 'accept' => 'image/*');?>
  <?=form_open_multipart(site_url("blogs/signup_validation"))?>
