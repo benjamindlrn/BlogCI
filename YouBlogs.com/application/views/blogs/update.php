@@ -24,6 +24,10 @@
     margin-right: -13px;
     margin-left: -15px;
 }
+h4{
+  color: red;
+}
+
  </style>
 
 
@@ -35,7 +39,7 @@
  <?= form_open(site_url('blogs/update_validation'))?>
  <?=form_hidden(array('post_id'=>$post_id))?>
  <label for="title">Title:</label>
- <?=form_input($inptitle)?><p><?=form_error('title')?></p>
+ <?=form_input($inptitle)?><h4><?=form_error('title')?></h4>
  <label for="sel1">Select a topic:</label>  
   <select class="form-control" name="tag" style="width: 200px">
     <option>Affirmations</option>
@@ -55,7 +59,7 @@
 <body>
     <textarea name="text">  
   <?=$text?>
-</textarea><p><?=form_error('text')?></p>
+</textarea><h4><?=form_error('text')?></h4>
  <?=form_submit($submit)?>
  <?=form_close()?>
  </div>

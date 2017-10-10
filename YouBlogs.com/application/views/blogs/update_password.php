@@ -33,6 +33,15 @@
  div{
   text-align: center;
  }
+ .w3-card-4{
+  width: 400px;
+  margin-left: 35%;
+ }
+h4 {
+	color: red;
+}
+
+
 </style>
 	<?=form_open('blogs/update_password_validation')?>
 		<div class="w3-card-4" id="card" style="margin-top: 8%">
@@ -40,10 +49,10 @@
   			<h3>Type your new password</h3>
 		</header>
 		<div class="w3-container"><br>
-		<?=form_input(array('placeholder'=>'Type your password','name'=>'password'))?><br><br>
-		<?=form_error('password')?>
-		<?=form_input(array('placeholder'=>'Type your password','name'=>'passwordC'))?><br><br>
-		<?=form_error('passwordC')?>
+		<?=form_input(array('placeholder'=>'Type your password','type'=>'password' ,'name'=>'password'))?><br><br>
+		<h4><?=form_error('password')?></h4>
+		<?=form_input(array('placeholder'=>'Type your password','type'=>'password' ,'name'=>'passwordC'))?><br><br>
+		<h4><?=form_error('passwordC')?></h4>
 		<?=form_submit(array('type'=>'submit' ,'class'=>'btn btn-default'),'Set new password')?>
 		</div>
 		</div>

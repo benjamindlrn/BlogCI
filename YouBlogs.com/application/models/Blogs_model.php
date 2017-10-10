@@ -33,22 +33,6 @@ class Blogs_model extends CI_Model {
         	return $query->row_array();
 		}
 
-		 		public function set_blogs()
-		 {
-		     $this->load->helper('url');
-		     $slug = url_title($this->input->post('title'), 'dash', TRUE);
-
-		     $data = array(
-		         'title' => $this->input->post('title'),
-		         'slug' => $slug,
-		         'text' => $this->input->post('text')
-		     );
-
-		     return $this->db->insert('blogs', $data);
-		 }
-
-     
-
 		 function can_login($username, $password)  
       {  
           
@@ -129,10 +113,11 @@ class Blogs_model extends CI_Model {
      public function set_blog()
      {
           $user=$this->db->query("Select id from users where username ='".$_SESSION['username']."'");
+          $newstr = filter_var($this->input->post('text'), FILTER_SANITIZE_STRING);
           $this->load->helper('url');                
          $data = array(
              'title' => $this->input->post('title'),             
-             'text' => $this->input->post('text'),             
+             'text' => $newstr,             
              'date' => date('Y-m-d') ,                  
              'time' => date("H:i:s"),
              'tag' => $this->input->post('tag'),
@@ -145,10 +130,10 @@ class Blogs_model extends CI_Model {
 
    public function local_upload()
       {
+
           $currentDir = getcwd();
           $uploadDirectory = "/uploads/";
-          $fileExtensions = ['jpeg','jpg','png']; // Get all the file extensions
-          $fileName = $_FILES['myfile']['name'];
+          $fileExtensions = ['jpeg','jpg','png']; // Get all the file extensions          
           $fileSize = $_FILES['myfile']['size'];
           $fileTmpName  = $_FILES['myfile']['tmp_name'];
           $fileType = $_FILES['myfile']['type'];          
@@ -174,7 +159,7 @@ class Blogs_model extends CI_Model {
                     $name = $str[0];
                     $valid=true;
                       \Cloudinary\Uploader::upload($uploadPath,array("public_id" => $name));
-                      unlink($uploadPath);
+                      //unlink($uploadPath);
 
 
                   } else {

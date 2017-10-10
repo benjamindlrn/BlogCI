@@ -29,7 +29,14 @@
   h4 {
     color: red;
   }
+
+div {
+  text-align: center;
+}
+
+
  </style>
+
 
 
 <?php 
@@ -38,18 +45,21 @@
  $submit = array('name' => 'submit', 'value' => 'Done', 'title' => 'Done');
 
  ?>
- <div align="center" style="margin-top: 8%">
+   <link rel="stylesheet" src="css/style.css">
+ <div style="margin-left: 16%; margin-top:10%; width: 1000px" >
  <?=form_open(site_url('blogs/create_validation'))?>
  <label for="title">Title:</label>
  <?=form_input($title)?><h4><?=form_error('title')?></h4>
  <label for="sel1">Select a topic:</label>  
-  <select class="form-control" name="tag" style="width: 200px">
+ <div>
+  <select class="form-control" name="tag" style="width: 200px; margin-left: 40%">
     <option>Affirmations</option>
     <option>Concentration & Mind Power</option>
     <option>General</option>
     <option>Happiness & Joy</option>
     <option>Goals</option>
   </select>
+  </div>
  <label for="text">Text:</label>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,12 +72,12 @@
   <script>tinymce.init({ selector:'textarea' });</script>
 <style type="text/css">
 	textarea {
-		height: 500px;
+		height: 500px;    
 	}
 </style>
 <body>
 <h4><?=form_error('text')?></h4>
-    <textarea name="text">  
+    <textarea rows=5 name="text">  
   
 </textarea>
 </body>

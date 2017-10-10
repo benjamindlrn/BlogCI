@@ -21,11 +21,14 @@ input[type=text],input[type=password]{
  background: #2196f3;
  color: #fff;
  }
+ h4 {
+ 	color: red;
+ }
  </style>
 <div align="center" style="margin-top: 8%">
 <?=form_open('blogs/send_recovery')?>
 <label for="name">Enter your recovery email</label>
-<?=form_input(array('placeholder'=>'Type your email','name'=>'mail'))?><p><?=form_error('mail')?></p>
+<?=form_input(array('placeholder'=>'Type your email','name'=>'mail'))?><h4><?=form_error('mail')?></h4>
 <?=form_submit(array('value'=>'Send','name'=>'emailConf'))?>
 <?=form_close()?>
 </div>

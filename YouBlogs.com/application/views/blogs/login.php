@@ -26,6 +26,9 @@
       bottom: 0px;      
       position: absolute;
     }
+    h4 {
+    	color: red;
+    }
  </style>
 <?php
  $username = array('name' => 'username', 'placeholder' => 'Type your username');
@@ -36,9 +39,9 @@
   <label><?=$this->session->flashdata('Message');?></label>
  <?=form_open(site_url('blogs/login_validation'))?>
  <label for="username">Username:</label>
- <?=form_input($username)?><p><?=form_error('username')?></p>
+ <?=form_input($username)?><h4><?=form_error('username')?></h4>
  <label for="password">Password:</label>
- <?=form_input($password)?><p><?=form_error('password')?></p>
+ <?=form_input($password)?><h4><?=form_error('password')?></h4>
  <?=form_submit($submit)?><br><br>
  <a href="<?=site_url('blogs/recover_password')?>" >I forgot my password</a>
  <?=form_close()?>

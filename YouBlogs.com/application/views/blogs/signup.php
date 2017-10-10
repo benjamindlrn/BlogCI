@@ -23,6 +23,10 @@
       bottom: 0px;      
       position: absolute;
     }
+h4{
+  color: red;
+}
+
  </style>
 <script>
 	   function previewFile(){
@@ -67,12 +71,12 @@
  </div>
  </div>
  <label for="username">Username:</label>
- <?=form_input($username)?><p><?=form_error('username')?></p>
+ <?=form_input($username)?><h4><?=form_error('username')?></h4>
  <label for="password">Password:</label>
- <?=form_input($password)?><p><?=form_error('password')?></p>
- <?=form_input($passwordConfirm)?><p><?=form_error('passwordC')?></p>
+ <?=form_input($password)?><h4><?=form_error('password')?></h4>
+ <?=form_input($passwordConfirm)?><h4><?=form_error('passwordC')?></h4>
  <label for="email">Email:</label>
- <?=form_input($email)?><p><?=form_error('email')?></p>
+ <?=form_input($email)?><h4><?=form_error('email')?></h4>
  <?=form_submit($submit)?>
  <?=form_close()?>
 </div>

@@ -1,7 +1,12 @@
 $(document).ready(function(){
     tinymce.init({
-      selector: 'textarea',
-      height: 1500,
+       selector: 'textarea',
+       mode : "textareas",
+      theme : "advanced",      
+       forced_root_block : "", 
+    force_br_newlines : true,
+    force_p_newlines : false,         
+      width : 70%,      
       menubar: false,
       plugins: [
         'advlist autolink lists link image charmap print preview anchor textcolor',

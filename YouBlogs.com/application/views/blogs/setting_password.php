@@ -21,6 +21,14 @@
 	 background: #2196f3;
 	 color: #fff;
 	 }
+
+	 .w3-card-4{
+  width: 400px;
+  margin-left: 35%;
+ }
+h4 {
+	color: red;
+}
 </style>
 <body>
 <?=form_open('blogs/enterPassword_validation')?>
@@ -29,8 +37,8 @@
   <h3>To continue, first verify it's you</h3>
 </header>
 <div class="w3-container"><br>
-<?=form_input(array('placeholder'=>'Type your password','name'=>'password'))?><br><br>
-<?=form_error('password')?>
+<?=form_input(array('placeholder'=>'Type your password','type'=>'password' ,'name'=>'password'))?><br><br>
+<h4><?=form_error('password')?></h4>
 <p><?=$this->session->flashdata('login_check')?></p>
 <?=form_submit(array('type'=>'submit' ,'class'=>'btn btn-default'),'Submit')?>
 </div>

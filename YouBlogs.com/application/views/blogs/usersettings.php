@@ -30,6 +30,15 @@
  div{
   text-align: center;
  }
+
+ .w3-card-4{
+  width: 400px;
+  margin-left: 35%;
+ }
+h4 {
+  color: red;
+}
+
 </style>
 <?php
       $usernameInput = array('name' => 'username', 'placeholder' => 'Type your new username', 'value' => $username,'minlength'=>3);
@@ -48,14 +57,14 @@
   <?=form_input($inputUpload)?> <br>
   <p><?=form_input($usernameInput)?></p></td>
 </p>  
-<?=form_error('username')?>
+<h4><?=form_error('username')?></h4>
 </div>
 <div class="w3-container w3-blue">
   <h5>Email</h5>
 </div>
 <div class="w3-container"><br>
   <p><?=form_input($emailInput)?></p> 
-  <?=form_error('email')?><br>
+  <h4><?=form_error('email')?></h4><br>
  <?=form_submit($confirm,"Confirm changes")?> 
   <?=form_close()?>
   <label><?=$this->session->flashdata('Message');?></label>

@@ -5,12 +5,17 @@
 		font-size: 18px;		
 		margin-left: 22%;		
 	}
+
 	#comments {
 		margin-left: 4%;
 	}
 .row {
     margin-right: -7px;
     margin-left: -15px;
+}
+
+h4 {
+  color: red;
 }
 </style>
  <script src="../../../lib/jquery.js"></script>
@@ -59,6 +64,7 @@
 	$query = $this->db->query("Select * from posts where id = '".$post_id."'"); 		 		                
       foreach ($query->result_array()  as $row)
 			{        
+        $text = str_replace(array('<p>','</p>'), '',$row['text']);
 				$post_id=$this->input->get('post_id');
 				$username = $this->db->query("select username FROM users where users.id = ".$row['user_id']);     
         		echo "
@@ -68,7 +74,7 @@
       			<h2 align='center'>".$row['title']."</h2>
       			<h5><span class='label label-danger'>".$row['tag']."</span></h5>
       			<h5><span class='glyphicon glyphicon-time'></span> Post by ".$username->result_array()['0']['username'].", ".$row['date'].".</h5>      
-      			<p>".$row['text']."</p>
+      			<p>".wordwrap($text,140,"<br>\n")."</p>
       			<br></div>"; 
 	}			
 				$num = $this->db->query("select COUNT(*) from comments where post_id ='".$post_id."'")->result_array()['0']['COUNT(*)'];
@@ -78,7 +84,9 @@
 	 			$hidden = array('post_idC' => $post_id );
 	      		echo form_open('blogs/insert_comment',array('method'=>'get', 'style'=>'margin-left:10%',$hidden));	      			      		
 	      		echo form_textarea(array('rows'=>'3', 'name'=>'text', 'class'=>'form-control', 'style'=>'width:80%;','maxlength'=>'750'));
+            echo "<h4>";
 	      		echo validation_errors();
+            echo "</h4>";
 	      		 $submit = array( 'value'=> $post_id, 'name'=>'post_id' ,'class' => 'btn btn-success', 'type'=>'submit');  
 	      		echo form_button($submit,'Submit');	
 	      			      		

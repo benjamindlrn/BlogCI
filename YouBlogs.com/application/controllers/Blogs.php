@@ -217,10 +217,13 @@ class Blogs extends CI_Controller {
                 }
                $this->load->library('form_validation');  
                $this->form_validation->set_message(array('is_unique'=>"That user name is already taken"));
+               
                $this->form_validation->set_rules('username', 'Username' ,'required|max_length[30]|is_unique[users.username]');  
+
                $this->form_validation->set_rules('password', 'Password', 'required|min_length[8]|max_length[30]');  
                $this->form_validation->set_rules('passwordC', 'Password Confirmation', 'matches[password]');
-               $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]');               
+               $this->form_validation->set_message(array('is_unique'=>"That email is already associated"));
+               $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]|is_unique[users.email]');               
 
                if($this->form_validation->run())  
                {  
@@ -249,7 +252,7 @@ class Blogs extends CI_Controller {
                     redirect(site_url('blogs'));  
                 }
                $this->load->library('form_validation');  
-               $this->form_validation->set_rules('title', 'Title', 'required');  
+               $this->form_validation->set_rules('title', 'Title', 'required|max_length[60]');  
                $this->form_validation->set_rules('text', 'Text', 'required');  
                if($this->form_validation->run())  
                {  
@@ -381,15 +384,31 @@ class Blogs extends CI_Controller {
                }
                $this->load->library('form_validation');  
                $this->load->library('form_validation');  
-               if ($this->session->username!==$this->input->post('username'))
+               $username =$this->session->username;
+               $email=$this->db->where('username',$username)->get('users')->result_array()[0]['email'];
+               if ($username!==$this->input->post('username'))
                {
                  $this->form_validation->set_message(array('is_unique'=>"That user name is already taken"));
+
                 $this->form_validation->set_rules('username', 'Username' ,'required|max_length[30]|is_unique[users.username]');
+                
+
                }      
                else{
                 $this->form_validation->set_rules('username', 'Username' ,'required|max_length[30]');
-               }       
-               $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]');
+
+               }    
+                
+               if ($email!==$this->input->post('email'))
+               {
+                  $this->form_validation->set_message(array('is_unique'=>"That email is already taken"));   
+               $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]|is_unique[users.email]');
+               }
+               else {
+                $this->form_validation->set_rules('email', 'Email', 'required|valid_email|max_length[50]');
+               }
+
+
                if($this->form_validation->run())  
                {  
                     $this->update_user();  
@@ -444,17 +463,8 @@ class Blogs extends CI_Controller {
                 }
               $this->load->helper('url');  
                $url="http://res.cloudinary.com/dr8r92oou/image/upload/v1505831287/";
-               $imageId;
-               $default="avatar.jpg";                  
+               $imageId=$this->input->post('myfile');                                          
                
-               if (!$this->blogs_model->local_upload())
-               {
-                  $img=$this->db->query("select img from users where username='".$this->session->username."'")->result_array()[0]['img'];
-                  $imageId=substr($img, 61);
-               }
-               else {
-                  $imageId=$_FILES['myfile']['name'];                                          
-               }
               $this->load->model('blogs_model');              
               $username=$this->session->userdata('username');
               $newUsername=$this->input->post('username');  
@@ -465,6 +475,7 @@ class Blogs extends CI_Controller {
               'email' => $email,
               'img' => $url.$imageId
               );              
+              var_dump($data);
               $this->db->where('id', $id);
               $this->db->update('users', $data);
               $session_data = array(  
